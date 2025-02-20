@@ -152,7 +152,7 @@ export interface FieldArray<TValue> {
    *
    * This is an alias of `attrs.modelValue`.
   */
-  value: ComputedRef<TValue>
+  value: ComputedRef<TValue[]>
   /**
    * Insert a new field at the given index.
    * @param index The index of the field to insert.
@@ -202,7 +202,7 @@ export interface FieldArray<TValue> {
 
   registerArray: <TPath extends TValue[] extends FieldValues ? FieldPath<TValue[]> : never>(
     path: TPath
-  ) => TValue[] extends FieldValues ? FieldArray<FieldPathValue<TValue[], TPath>> : never
+  ) => TValue extends FieldValues ? FieldArray<FieldPathValue<TValue, TPath extends FieldPath<TValue> ? TPath : never>> : never
 }
 
 export type Register<TSchema> = <
@@ -300,6 +300,10 @@ export interface Form<TSchema extends StandardSchemaV1> {
    * Resets the form to the initial state.
    */
   reset: () => void
+  /**
+   * Blurs all inputs in the form.
+   */
+  blurAll: () => void
 }
 
 /**
